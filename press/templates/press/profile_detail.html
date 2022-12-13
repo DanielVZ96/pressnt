@@ -1,0 +1,13 @@
+
+{%extends 'base.html'%}
+
+{%block content%}
+<h1>{{ object }}</h1>
+<img src="{{ object.pic.url }}"/>
+<p>{{ object.post.follow_count }} Followers</p>
+<p>{{ object.description }}</p>
+<p>Joined: {{ object.created_at|date }}</p>
+{% if user.id == object.user.id%}
+    <button><a href="{% url 'profile-update' %}">Edit</a></button>
+{% endif %}
+{%endblock content%}

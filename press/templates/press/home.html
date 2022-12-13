@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="home">
+        <div class="trend">
+            <table>
+                {% for post in trend_page_obj %}
+                    <tr>
+                        <td>{{ post.like_count }}</td>
+                        <td>
+                            (<a href="{% url 'profile-detail' pk=post.user.profile.id %}">{{ post.user.profile }}</a>)
+                        </td>
+                        <td>
+                            <a href="{% url 'post-detail' pk=post.id %}">{{ post.title }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if trend_page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ trend_page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="current">Page {{ trend_page_obj.number }} of {{ trend_page_obj.paginator.num_pages }}.</span>
+                    {% if trend_page_obj.has_next %}
+                        <a href="?trend_page={{ trend_page_obj.next_page_number }}">next</a>
+                        <a href="?trend_page={{ trend_page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <div class="follows">
+            <table>
+                {% for followed_post in follow_page_obj %}
+                    <tr>
+                        <td>{{ followed_post.like_count }}</td>
+                        <td>
+                            (<a href="{% url 'profile-detail' pk=followed_post.user.profile.id %}">{{ followed_post.user.profile }}</a>)
+                        </td>
+                        <td>
+                            <a href="{% url 'post-detail' pk=followed_post.id %}">{{ followed_post.title }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if follow_page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ follow_page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="current">Page {{ follow_page_obj.number }} of {{ follow_page_obj.paginator.num_pages }}.</span>
+                    {% if follow_page_obj.has_next %}
+                        <a href="?trend_page={{ follow_page_obj.next_page_number }}">next</a>
+                        <a href="?trend_page={{ follow_page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

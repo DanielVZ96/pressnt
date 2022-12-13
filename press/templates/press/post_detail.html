@@ -1,0 +1,22 @@
+
+{%extends 'base.html'%}
+
+{%block content%}
+<h3><a href="{% url 'profile-detail' pk=object.user.profile.id %}">{{ object.user.profile }}</a></h3>
+<form method="post" id="like" novaldiate class="card">
+{% csrf_token %}
+{{ like_form.as_p }}
+<input type="submit" name="like" value="{{ like_form.instance.active|yesno:"Unlike,Like" }}" class="btn btn-primary full-width"> ({{ object.like_count }})
+</form>
+<form method="post" id="follow" novaldiate class="card">
+{% csrf_token %}
+{{ follow_form.as_p }}
+<input type="submit" name="follow" value="{{ follow_form.instance.active|yesno:"Unfollow,Follow" }}" class="btn btn-primary full-width"> ({{ object.follow_count }})
+</form>
+{% if object.user.id == user.id %}
+<a href={% url 'post-update' %}>Edit</a>
+{% endif %}
+<div class="markdownx">
+    {{ markdown | safe }}
+</div>
+{%endblock content%}
