@@ -1,0 +1,7 @@
+app.pressnt.net {
+    route {
+        uri replace /media /pressnt
+        redir /pressnt* https://pressnt.s3.fr-par.scw.cloud/{uri}
+        reverse_proxy django:8000
+    }
+}

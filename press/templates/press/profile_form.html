@@ -1,22 +1,56 @@
-
-{%extends 'base.html'%}
-
-{%block content%}
-	<div class="center">
-	  <form method="post" novaldiate class="card">
-	  	{% csrf_token %}
-	    <h2 class="text-center">Profile</h2>
-		{% for field in form %}
-	    		{{ field.label_tag }}
-	        	{{ field }}
-	        	{% if field.errors %}
-	        		<small class="error">{{ field.errors|striptags  }}</small>
-	        	{% endif %}
-		{% endfor %}
-
-		<input type="submit" value="Save" class="btn btn-primary full-width">
-		<hr>
-		</form>
-		<button><a href="{% url 'profile-preview' %}">Preview</a></button>
-	</div>
-{%endblock content%}
+{% extends 'base.html' %}
+{% block content %}
+    <div class="m-5 border-2 border-black dark:border-sky-50 w-full max-w-md">
+        <form enctype="multipart/form-data"
+              method="post"
+              class="flex-1 items-center"
+              novalidate>
+            {% csrf_token %}
+            <h2 class="text-center border-b-2 border-b-black dark:border-sky-50">Edit Your Profile</h2>
+            <div class="p-5 pb-0">
+                {% for field in form %}
+                    <div class="p-2 grid place-content-center">
+                        <table class="w-96">
+                            <tr class="p-2 flex">
+                                <td class="text-xs absolute ml-10 -mt-1 bg-sky-50 border-black border px-1">{{ field.label }}</td>
+                            </tr>
+                            <tr>
+                                <td class="flex justify-center w-full">{{ field }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center justify-center w-full">
+                                    {% if field.errors %}<small>{{ field.errors|striptags }}</small>{% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="p-2 flex-1">
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="text-red-400 text-sm text-center">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="text-red-400 text-sm">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="px-5 py-2 flex place-content-center">
+                    <input type="submit"
+                           value="Save"
+                           class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400 w-4/5"/>
+                </div>
+                <div class="flex px-5 place-content-center">
+                    <a class="align-middle border border-black bg-sky-50 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-black font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-slate-900 dark:highlight-white/20 dark:hover:bg-slate-400 w-4/5"
+                       href="{% url 'profile-preview' %}">Preview</a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

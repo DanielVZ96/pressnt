@@ -1,13 +1,63 @@
-
-{%extends 'base.html'%}
-
-{%block content%}
-<h1>{{ object }}</h1>
-<img src="{{ object.pic.url }}"/>
-<p>{{ object.post.follow_count }} Followers</p>
-<p>{{ object.description }}</p>
-<p>Joined: {{ object.created_at|date }}</p>
-{% if user.id == object.user.id%}
-    <button><a href="{% url 'profile-update' %}">Edit</a></button>
-{% endif %}
-{%endblock content%}
+{% extends "base.html" %}
+{% block content %}
+    <div class="flex-1 m-5 border-2 bg-white dark:bg-inherit border-black dark:border-sky-50 w-full max-w-md">
+        <h2 class="text-center bg-sky-50 dark:bg-inherit border-b-2 border-b-black">{{ object }}</h2>
+        <div class="p-2 flex-1 place-content-center pb-5">
+            <table class="w-full">
+                <tr class="p-2 flex">
+                    <td class="flex justify-center w-full">
+                        <img width="128px"
+                             height="128px"
+                             alt="Profile Picture"
+                             class="w-4/5 border-black border dark:bg-sky-100 rounded-lg aspect-1 apect object-cover"
+                             src="{{ object.pic.url }}"/>
+                    </td>
+                </tr>
+                <tr class="p-2 flex">
+                    <td class="flex justify-center w-full">
+                        <p>{{ object.user.post.follow_count }} Followers</p>
+                    </td>
+                    <td class="flex justify-center w-full">
+                        <p>{{ object.created_at|date }}</p>
+                    </td>
+                </tr>
+                <tr class="p-2 flex">
+                    <td class="flex bg-sky-50 dark:bg-inherit justify-center w-full p-2 mx-10 border-2 border-black">
+                        <p>{{ object.description }}</p>
+                    </td>
+                </tr>
+                <tr class="p-2 flex">
+                    <td class="flex justify-center w-full">
+                        <form class="flex place-content-center w-full px-10 m-0"
+                              method="post"
+                              id="follow"
+                              novaldiate>
+                            {% csrf_token %}
+                            {{ follow_form.as_p }}
+                            <input type="submit"
+                                   name="follow"
+                                   value="{{ follow_form.instance.active|yesno:"Unfollow,Follow" }}"
+                                   class="cursor-pointer text-center w-full align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400"/>
+                        </form>
+                    </td>
+                </tr>
+                <tr class="px-2 flex">
+                    <td class="flex justify-center w-full">
+                        <a class="dark:text-white align-middle border border-black bg-sky-50 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-black font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-slate-900 dark:highlight-white/20 dark:hover:bg-slate-400 w-4/5"
+                           href="{% url 'post-detail' pk=object.user.post.id %}">Their Post</a>
+                    </td>
+                </tr>
+                <tr class="p-2 flex">
+                </tr>
+                {% if user.id == object.user.id %}
+                    <tr class="p-2 pt-0 flex place-content-center">
+                        <td class="dark:text-white align-middle border border-black bg-sky-50 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-black font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-slate-900 dark:highlight-white/20 dark:hover:bg-slate-400 w-4/5">
+                            <a class="cursor-pointer w-full text-center"
+                               href="{% url 'profile-update' %}">Edit</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+{% endblock content %}

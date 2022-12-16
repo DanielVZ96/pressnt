@@ -1,21 +1,19 @@
-{%extends 'base.html'%}
-
-{%block content%}
-	<div class="center">
-	  <form method="post" novaldiate class="card">
-	  	{% csrf_token %}
-	    <h2 class="text-center">Post editor</h2>
-		{% for field in form %}
-					{{ field.label_tag }}
-					{{ field }}
-					{% if field.errors %}
-						<small class="error">{{ field.errors|striptags  }}</small>
-					{% endif %}
-		{% endfor %}
-
-		<input type="submit" value="Save" class="btn btn-primary full-width">
-		<hr>
-		</form>
-        {{ form.media }}
-	</div>
-{%endblock content%}
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        <form method="post" novalidate class="flex-1 w-full">
+            {% csrf_token %}
+            <div class="p-2">
+                <input type="submit"
+                       value="Save"
+                       class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg w-full flex items-center justify-center  dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400"/>
+            </div>
+            {% for field in form %}
+                <div class="text-xs absolute ml-5 -mt-1 bg-sky-50 border-black border px-1">{{ field.label }}</div>
+                {{ field }}
+                {% if field.errors %}<small class="error">{{ field.errors | striptags }}</small>{% endif %}
+            {% endfor %}
+        </form>
+        <div class="unreset">{{ form.media }}</div>
+    </div>
+{% endblock content %}

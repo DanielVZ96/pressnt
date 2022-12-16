@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.utils.html import format_html
 
-from press.models import Follow, PostLike
+from press.models import Follow, PostLike, Profile
 
 
 class RegisterForm(UserCreationForm):
@@ -38,4 +39,25 @@ class FollowForm(forms.ModelForm):
             "post": forms.HiddenInput(),
             "user": forms.HiddenInput(),
             "active": forms.HiddenInput(),
+        }
+
+
+class PictureWidget(forms.widgets.FileInput):
+    def render(self, *args, **kwargs):
+        return format_html(
+            """
+            <img width="128px" height="128px" class="w-4/5 border-black border dark:bg-sky-100 rounded-lg aspect-1 apect object-cover" id="img_pic" src="/media/{}"/></td></tr>
+            <tr><td class="flex justify-center w-full">
+            <input  class="p-2 block w-full text-sm text-gray-900 border border-black  rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" id="id_pic" name="pic" accept="image/*">
+            </td>""",
+            kwargs.get("value"),
+        )
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ("pic", "name", "description")
+        widgets = {
+            "pic": PictureWidget(),
         }

@@ -1,62 +1,99 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
-    <div class="home">
-        <div class="trend">
-            <table>
-                {% for post in trend_page_obj %}
-                    <tr>
-                        <td>{{ post.like_count }}</td>
-                        <td>
-                            (<a href="{% url 'profile-detail' pk=post.user.profile.id %}">{{ post.user.profile }}</a>)
-                        </td>
-                        <td>
-                            <a href="{% url 'post-detail' pk=post.id %}">{{ post.title }}</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-            <div class="pagination">
-                <span class="step-links">
-                    {% if trend_page_obj.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ trend_page_obj.previous_page_number }}">previous</a>
-                    {% endif %}
-                    <span class="current">Page {{ trend_page_obj.number }} of {{ trend_page_obj.paginator.num_pages }}.</span>
-                    {% if trend_page_obj.has_next %}
-                        <a href="?trend_page={{ trend_page_obj.next_page_number }}">next</a>
-                        <a href="?trend_page={{ trend_page_obj.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
-                </span>
+    <div class="md:flex">
+        <div class="m-5 border-2 bg-white dark:bg-slate-700 border-black">
+            <h1 class="text-center bg-sky-50 border-b-2 border-b-black dark:bg-sky-500 ">Trending posts</h1>
+            {% for post in trend_page_obj %}
+                <div onclick="location.href=`{% url 'post-detail' pk=post.id %}`"
+                     class="cursor-pointer flex flex-row md:p-5  m-2 md:w-[450px] hover:bg-sky-50 dark:hover:bg-sky-500">
+                    <div class="p-2 content-end">
+                        <img height="50px"
+                             width="50px"
+                             alt="pofile pic"
+                             class="border-black border dark:bg-sky-100 rounded-full aspect-1 apect object-cover"
+                             src="{{ post.user.profile.pic.url }}"/>
+                    </div>
+                    <div class="p-2">
+                        <table >
+                            <tr>
+                                <td class="text-xl font-bold underline hover:text-sky-500">
+                                    <a class="sm:py-5 z-10" href="{% url 'post-detail' pk=post.id %}">{{ post.title }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-sm p-0">
+                                    {{ post.comment_count }} comments
+                                    {{ post.like_count }} likes
+                                    - by <a href="{% url 'profile-detail' pk=post.user.profile.id %}"
+    class="sm:py-5 hover:underline hover:text-sky-500">
+                                    {{ post.user.profile }}
+                                </a>
+                                <div class="text-sm p-0 absolute">Last Update: {{ post.updated_at | date:"SHORT_DATE_FORMAT" }}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
+        {% endfor %}
+        <div class="pt-5 pl-5">
+            <span class="step-links">
+                {% if trend_page_obj.has_previous %}
+                    <a href="?trend_page=1&follow_page={{ follow_page_obj.number }}"><< first</a>
+                    <a href="?trend_page={{ trend_page_obj.previous_page_number }}&follow_page={{ follow_page_obj.number }}"">previous</a>
+                {% endif %}
+                <span class="current">Page {{ trend_page_obj.number }} of {{ trend_page_obj.paginator.num_pages }}.</span>
+                {% if trend_page_obj.has_next %}
+                    <a href="?trend_page={{ trend_page_obj.next_page_number }}&follow_page={{ follow_page_obj.number }}"">next</a>
+                    <a href="?trend_page={{ trend_page_obj.paginator.num_pages }}&follow_page={{ follow_page_obj.number }}"">last »;</a>
+                {% endif %}
+            </span>
         </div>
-        <div class="follows">
-            <table>
-                {% for followed_post in follow_page_obj %}
-                    <tr>
-                        <td>{{ followed_post.like_count }}</td>
-                        <td>
-                            (<a href="{% url 'profile-detail' pk=followed_post.user.profile.id %}">{{ followed_post.user.profile }}</a>)
-                        </td>
-                        <td>
-                            <a href="{% url 'post-detail' pk=followed_post.id %}">{{ followed_post.title }}</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-            <div class="pagination">
+    </div>
+    {% if has_follows %}
+        <div class="m-5 border-2 bg-white dark:bg-slate-700 border-black">
+            <h1 class="text-center bg-sky-50 border-b-2 border-b-black dark:bg-sky-500 ">Posts you follow</h1>
+            {% for follow in follow_page_obj %}
+                <div onclick="location.href=`{% url 'post-detail' pk=follow.post.id %}`"
+                     class="cursor-pointer flex flex-row md:p-5  m-2 w-auto hover:bg-sky-50  dark:hover:bg-sky-500">
+                    <div class="p-2 content-end">
+                        <img height="50px"
+                             width="50px"
+                             alt="pofile pic"
+                             class="border-black border dark:bg-sky-100 rounded-full aspect-1 apect object-cover"
+                             src="{{ follow.post.user.profile.pic.url }}"/>
+                    </div>
+                    <div class="p-2">
+                        <table >
+                            <tr>
+                                <td class="text-xl font-bold underline hover:text-sky-500 ">
+                                    <a href="{% url 'post-detail' pk=follow.post.id %}">{{ follow.post.title }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-sm p-0">
+                                    {{ follow.post.comment_count }} comments {{ follow.post.like_count }} likes by <a href="{% url 'profile-detail' pk=follow.post.user.profile.id %}"
+    class="hover:underline hover:text-sky-500">{{ follow.post.user.profile }}</a>
+                                    <div class="text-sm p-0 absolute">Last Update: {{ follow.post.updated_at | date:"SHORT_DATE_FORMAT" }}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="pt-5 pl-5">
                 <span class="step-links">
                     {% if follow_page_obj.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ follow_page_obj.previous_page_number }}">previous</a>
+                        <a href="?follow_page=1&trend_page={{ follow_page_obj.number }}"">&laquo; first</a>
+                        <a href="?follow_page={{ follow_page_obj.previous_page_number }}&trend_page={{ follow_page_obj.number }}">previous</a>
                     {% endif %}
                     <span class="current">Page {{ follow_page_obj.number }} of {{ follow_page_obj.paginator.num_pages }}.</span>
                     {% if follow_page_obj.has_next %}
-                        <a href="?trend_page={{ follow_page_obj.next_page_number }}">next</a>
-                        <a href="?trend_page={{ follow_page_obj.paginator.num_pages }}">last &raquo;</a>
+                        <a href="?follow_page={{ follow_page_obj.next_page_number }}&trend_page={{ follow_page_obj.number }}">next</a>
+                        <a href="?follow_page={{ follow_page_obj.paginator.num_pages }}&trend_page={{ follow_page_obj.number }}">last &raquo;</a>
                     {% endif %}
                 </span>
             </div>
         </div>
-    </div>
+    {% endif %}
 </div>
 {% endblock content %}

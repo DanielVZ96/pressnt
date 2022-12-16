@@ -1,0 +1,46 @@
+{% load comments i18n %}
+{% if user.is_authenticated %}
+    {% get_comment_form for object as form %}
+    <form action="{% comment_form_target %}"
+          class="flex items-center"
+          method="post">
+        {% csrf_token %}
+        {{ form.content_type }}
+        {{ form.object_pk }}
+        {{ form.security_hash }}
+        {% if node.id %}
+            <input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" />
+            <button class="px-2 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400 cursor-pointer"
+                    onclick="this.nextSibling.nextSibling.classList.remove('hidden'); this.classList.add('hidden')">
+                Reply
+            </button>
+        {% else %}
+            <button class="px-2 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400 cursor-pointer"
+                    onclick="this.nextSibling.nextSibling.classList.remove('hidden'); this.classList.add('hidden')">
+                Comment
+            </button>
+        {% endif %}
+        <div class="hidden">
+            <div class="flex items-center">
+                {{ form.comment }}
+                <input type="hidden"
+                       name="next"
+                       value="{% url object_detail_view object.id %}"/>
+                <input type="submit"
+                       class=" my-2 ml-2 cursor-pointer align-middle border border-black bg-sky-50 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-black font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-slate-900 dark:highlight-white/20 dark:hover:bg-slate-400 w-auto"
+                       value="Reply"
+                       id="id_submit"/>
+                <button class="px-2 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400 cursor-pointer"
+                        onclick="this.parentElement.parentElement.classList.add('hidden'); this.parentElement.parentElement.previousElementSibling.classList.remove('hidden')">
+                    Close
+                </button>
+            </div>
+        </div>
+        {{ form.timestamp }}
+    </form>
+{% else %}
+    <p>
+        Please <a class="py-5 underline hover:text-sky-500 dark:hover:text-sky-400"
+    href="{% url 'login' %}">log in</a> to leave a comment.
+    </p>
+{% endif %}

@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 
 from press.views import (
     Home,
@@ -8,6 +8,8 @@ from press.views import (
     RegisterView,
     UpdateProfileView,
     ProfileDetailView,
+    EmailSentView,
+    VerifyView,
 )
 
 urlpatterns = [
@@ -19,5 +21,7 @@ urlpatterns = [
     path("post/<int:pk>/", PostDetail.as_view(), name="post-detail"),
     path("post/me/", PostDetail.as_view(), name="user-post-detail"),
     path("post/", PostUpdate.as_view(), name="post-update"),
+    path("sent/", EmailSentView.as_view(), name="email-sent"),
+    path("verify/<str:token>/", VerifyView.as_view(), name="verify-email"),
     path("", Home.as_view(), name="home"),
 ]

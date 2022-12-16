@@ -1,22 +1,59 @@
-
-{%extends 'base.html'%}
-
-{%block content%}
-<h3><a href="{% url 'profile-detail' pk=object.user.profile.id %}">{{ object.user.profile }}</a></h3>
-<form method="post" id="like" novaldiate class="card">
-{% csrf_token %}
-{{ like_form.as_p }}
-<input type="submit" name="like" value="{{ like_form.instance.active|yesno:"Unlike,Like" }}" class="btn btn-primary full-width"> ({{ object.like_count }})
-</form>
-<form method="post" id="follow" novaldiate class="card">
-{% csrf_token %}
-{{ follow_form.as_p }}
-<input type="submit" name="follow" value="{{ follow_form.instance.active|yesno:"Unfollow,Follow" }}" class="btn btn-primary full-width"> ({{ object.follow_count }})
-</form>
-{% if object.user.id == user.id %}
-<a href={% url 'post-update' %}>Edit</a>
-{% endif %}
-<div class="markdownx">
-    {{ markdown | safe }}
-</div>
-{%endblock content%}
+{% extends "base.html" %}
+{% block content %}
+    {% load comments %}
+    <div class="2xl:flex justify-center">
+        <div class="ml-auto bg-white dark:bg-inherit min-w-[50%] max-w-4xl px-10 py-5 border-black border-2 md:m-5 z-10">
+            <div class="text-lg pt-5">
+                <a href="{% url 'profile-detail' pk=object.user.profile.id %}"
+                   class="underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">
+                    <img height="50px"
+                         width="50px"
+                         alt="pofile pic"
+                         class="border-black border dark:bg-sky-100 rounded-full aspect-1 apect object-cover"
+                         src="{{ object.user.profile.pic.url }}"/>
+                By {{ object.user.profile }}</a>
+                {% if object.user.id == user.id %}
+                    <a href="{% url 'post-update' %}"
+                       class="bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg w-full justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400">Edit</a>
+                {% endif %}
+            </div>
+            <div class="flex align-center pt-2 -mb-5">
+                <div>
+                    <form method="post" id="like" novaldiate>
+                        {% csrf_token %}
+                        {{ like_form.as_p }}
+                        <input type="submit"
+                               name="like"
+                               value="{{ like_form.instance.active|yesno:"Unlike,Like" }}"
+                               class="underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400 cursor-pointer"/>
+                        ({{ object.like_count }})
+                    </form>
+                </div>
+                <div class="flex ">
+                    <form method="post" id="follow" novaldiate>
+                        {% csrf_token %}
+                        {{ follow_form.as_p }}
+                        <input type="submit"
+                               name="follow"
+                               value="{{ follow_form.instance.active|yesno:"Unfollow,Follow" }}"
+                               class="px-2 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400 cursor-pointer"/>
+                        ({{ object.follow_count }})
+                    </form>
+                </div>
+            </div>
+            <div class="markdownx-preview ">{{ markdown | safe }}</div>
+        </div>
+        <div class="2xl:fixed mt-2 w-full h-4/5 overflow-y-scroll scroll-smooth  2xl:p-5 p-3 border-b-2 border-black">
+            <div class="2xl:w-[30em] max-w-4xl m-2 border-2 border-black bg-white dark:bg-slate-700">
+                <h2 class="text-center bg-sky-50 border-b-2 border-b-black dark:bg-sky-500 ">Comments {{ object.comment_count }}</h2>
+                <div class="p-2">
+                    {% with object as object %}
+                        {% with object_detail_view="post-detail" %}
+                            {% include "_comments.html" %}
+                        {% endwith %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

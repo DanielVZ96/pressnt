@@ -9,120 +9,189 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
 
 from pathlib import Path
+from configurations import Configuration, values, pristinemethod
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#rvzg-726r*cn15%z-c36#u4e#vmjtxh=^lg3lc!*9zx!k@-2a"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
 # Application definition
-
-INSTALLED_APPS = [
+apps_to_install = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.forms",
+    "django.contrib.sites",
+    "django_comments",
+    "mptt",
     "markdownx",
+    "tailwind",
+    "theme",
+    "django_browser_reload",
     "press",
+    "comments",
 ]
 
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-]
 
-ROOT_URLCONF = "pressnt.urls"
+@pristinemethod
+def verified_callback(user):
+    user.is_active = True
 
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
+
+class DEV(Configuration):
+
+    # Quick-start development settings - unsuitable for production
+    # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = "django-insecure-#rvzg-726r*cn15%z-c36#u4e#vmjtxh=^lg3lc!*9zx!k@-2a"
+
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
+
+    ALLOWED_HOSTS = []
+
+    TAILWIND_APP_NAME = "theme"
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]
+
+    SITE_ID = 1
+    COMMENTS_APP = "comments"
+
+    FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
+
+    # Application definition
+    INSTALLED_APPS = apps_to_install
+
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
+    ]
+
+    ROOT_URLCONF = "pressnt.urls"
+
+    TEMPLATES = [
+        {
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "DIRS": [BASE_DIR / "templates"],
+            "APP_DIRS": True,
+            "OPTIONS": {
+                "context_processors": [
+                    "django.template.context_processors.debug",
+                    "django.template.context_processors.request",
+                    "django.contrib.auth.context_processors.auth",
+                    "django.contrib.messages.context_processors.messages",
+                ],
+            },
         },
-    },
-]
+    ]
 
-WSGI_APPLICATION = "pressnt.wsgi.application"
+    WSGI_APPLICATION = "pressnt.wsgi.application"
 
+    # Database
+    # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+
+    # Password validation
+    # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+
+    AUTH_PASSWORD_VALIDATORS = [
+        {
+            "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        },
+        {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
+        {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
+        {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    ]
+
+    # Internationalization
+    # https://docs.djangoproject.com/en/4.1/topics/i18n/
+
+    LANGUAGE_CODE = "en-us"
+
+    TIME_ZONE = "UTC"
+
+    USE_I18N = True
+
+    USE_TZ = True
+
+    # Static files (CSS, JavaScript, Images)
+    # https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+    STATIC_URL = "static/"
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATICFILES_DIRS = [BASE_DIR / "static"]
+
+    # Default primary key field type
+    # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+    DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+    MEDIA_ROOT = BASE_DIR / "media"
+    MEDIA_URL = "/media/"
+
+    LOGIN_REDIRECT_URL = "/profile/"
+
+    MARKDOWNX_MARKDOWN_EXTENSIONS = ["extra", "toc", "fenced_code"]
+    EMAIL_VERIFIED_CALLBACK = verified_callback
 
 
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+class PROD(DEV):
+    INSTALLED_APPS = apps_to_install
+    DEBUG = False
+    DATABASES = values.DatabaseURLValue(environ_required=True)
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
-]
+    ALLOWED_HOSTS = ["app.pressnt.net"]
+    CSRF_TRUSTED_ORIGINS = ["https://app.pressnt.net"]
+    CORS_ORIGIN_WHITELIST = CSRF_TRUSTED_ORIGINS
+    CORS_ORIGIN_ALLOW_ALL = True
+
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_STORAGE_BUCKET_NAME = "pressnt"
+    AWS_S3_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_S3_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_S3_ENDPOINT_URL = "https://pressnt.s3.fr-par.scw.cloud"
+    AWS_S3_REGION_NAME = "fr-par"
+
+    STATIC_URL = AWS_S3_ENDPOINT_URL + "/pressnt/"
+    MEDIA_URL = AWS_S3_ENDPOINT_URL + "/media/"
+
+    EMAIL_VERIFIED_CALLBACK = verified_callback
+    EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+    SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+    EMAIL_FROM_ADDRESS = "noreply@pressnt.net"
+    EMAIL_MAIL_SUBJECT = "Verify your pressn't account"
+    EMAIL_MAIL_HTML = "mail_body.html"
+    EMAIL_MAIL_PLAIN = "mail_body.txt"
+    EMAIL_MAIL_TOKEN_LIFE = 60 * 60
+    EMAIL_MAIL_PAGE_TEMPLATE = "confirm_template.html"
+    EMAIL_SUBJECT = "Verify your pressn't account"
+    EMAIL_HTML = "mail_body.html"
+    EMAIL_PLAIN = "mail_body.txt"
+    EMAIL_TOKEN_LIFE = 60 * 60
+    EMAIL_PAGE_TEMPLATE = "confirm_template.html"
+    EMAIL_PAGE_DOMAIN = "https://app.pressnt.net/"
+    SECRET_KEY = os.getenv("SECRET_KEY")
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
-USE_I18N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "/media/"
-
-LOGIN_REDIRECT_URL = "/profile/"
-
-MARKDOWNX_MARKDOWN_EXTENSIONS = ["markdown.extensions.extra"]
+EMAIL_VERIFIED_CALLBACK = verified_callback
