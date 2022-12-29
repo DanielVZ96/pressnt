@@ -8,9 +8,9 @@
     <div class="mx-2 px-2 border-l-4 w-full">
         <div>
             <a name="{{ node.id }}"></a>
-            {{ node.comment | bleach }}
+            <p class="overflow-scroll">{{ node.comment | bleach }}</p>
             <div class="font-extralight group">
-                By <a class="cursor-pointer hover:underline"
+                By <a class="cursor-pointer hover:underline overflow-ellipsis"
     href="{{ node.user.profile.get_absolute_url | bleach_linkify }}">{{ node.user }}</a>
                 {{ node.submit_date|timesince }} ago
                 <a class="invisible group-hover:visible"

@@ -5,7 +5,7 @@
             <h1 class="text-center bg-sky-50 border-b-2 border-b-black dark:bg-sky-500 ">Trending posts</h1>
             {% for post in trend_page_obj %}
                 <div onclick="location.href=`{% url 'post-detail' pk=post.id %}`"
-                     class="cursor-pointer flex flex-row md:p-5  m-2 md:w-[450px] hover:bg-sky-50 dark:hover:bg-sky-500">
+                     class="overflow-hidden cursor-pointer flex flex-row md:p-5  m-2 md:w-[450px] hover:bg-sky-50 dark:hover:bg-sky-500">
                     <div class="p-2 content-end">
                         <img height="50px"
                              width="50px"
@@ -17,7 +17,8 @@
                         <table >
                             <tr>
                                 <td class="text-xl font-bold underline hover:text-sky-500">
-                                    <a class="sm:py-5 z-10" href="{% url 'post-detail' pk=post.id %}">{{ post.title }}</a>
+                                    <a class="sm:py-5 z-10 block max-w-sm overflow-x-hidden"
+                                       href="{% url 'post-detail' pk=post.id %}">{{ post.title }}</a>
                                 </td>
                             </tr>
                             <tr>
@@ -54,7 +55,7 @@
             <h1 class="text-center bg-sky-50 border-b-2 border-b-black dark:bg-sky-500 ">Posts you follow</h1>
             {% for follow in follow_page_obj %}
                 <div onclick="location.href=`{% url 'post-detail' pk=follow.post.id %}`"
-                     class="cursor-pointer flex flex-row md:p-5  m-2 w-auto hover:bg-sky-50  dark:hover:bg-sky-500">
+                     class="overflow-ellipsis cursor-pointer flex flex-row md:p-5  m-2 w-auto hover:bg-sky-50  dark:hover:bg-sky-500">
                     <div class="p-2 content-end">
                         <img height="50px"
                              width="50px"
@@ -66,7 +67,8 @@
                         <table >
                             <tr>
                                 <td class="text-xl font-bold underline hover:text-sky-500 ">
-                                    <a href="{% url 'post-detail' pk=follow.post.id %}">{{ follow.post.title }}</a>
+                                    <a class="block max-w-sm overflow-hidden"
+                                       href="{% url 'post-detail' pk=follow.post.id %}">{{ follow.post.title }}</a>
                                 </td>
                             </tr>
                             <tr>
