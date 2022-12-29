@@ -35,6 +35,7 @@ apps_to_install = [
     "django_browser_reload",
     "press",
     "comments",
+    "django_bleach",
 ]
 
 

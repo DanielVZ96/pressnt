@@ -1,5 +1,6 @@
 {% load comments %}
 {% load mptt_tags %}
+{% load bleach_tags %}
 {% render_comment_form for object %}
 {% get_comment_list for object as comments %}
 {% if comments %}
@@ -7,13 +8,13 @@
     <div class="mx-2 px-2 border-l-4 w-full">
         <div>
             <a name="{{ node.id }}"></a>
-            {{ node.comment }}
+            {{ node.comment | bleach }}
             <div class="font-extralight group">
                 By <a class="cursor-pointer hover:underline"
-    href="{{ node.user.profile.get_absolute_url }}">{{ node.user }}</a>
+    href="{{ node.user.profile.get_absolute_url | bleach_linkify }}">{{ node.user }}</a>
                 {{ node.submit_date|timesince }} ago
                 <a class="invisible group-hover:visible"
-                   href="{{ object.get_absolute_url }}#c{{ node.id }}">#link</a>
+                   href="{{ object.get_absolute_url | bleach_linkify }}#c{{ node.id }}">#link</a>
             </div>
             {# recursion! children of a given comment #}
             {% render_comment_form for object %}

@@ -1,3 +1,5 @@
+import bleach
+
 from django_comments.models import Comment
 from django_comments.forms import CommentForm, COMMENT_MAX_LENGTH
 from mptt.models import MPTTModel, TreeForeignKey
@@ -18,6 +20,11 @@ class MPTTComment(MPTTModel, Comment):
         super().save(*args, **kwargs)
         if hasattr(self.content_object, "recount_comments"):
             self.content_object.recount_comments()
+
+    def _clean_fields(self, *args, **kwargs):
+        super()._clean_fields(*args, **kwargs)
+        for name, value in self.cleaned_data.items():
+            self.cleaned_data[name] = bleach.clean(value)
 
     class MPTTMeta:
         # comments on one level will be ordered by date of creation

@@ -1,3 +1,5 @@
+import bleach
+
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -51,7 +53,7 @@ class Post(models.Model):
 
     @property
     def markdown(self):
-        return markdownify(self.content)
+        return markdownify(bleach.clean(self.content))
 
     def recount_likes(self):
         self.like_count = self.likes.filter(active=True).count()
@@ -68,6 +70,7 @@ class Post(models.Model):
         self.save()
 
     def save(self, *args, **kwargs):
+        self.content = bleach.clean(self.content)
         lines = self.content.strip().splitlines()
         if lines:
             self.title = lines[0]
