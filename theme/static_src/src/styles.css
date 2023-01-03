@@ -7,8 +7,28 @@ div.markdownx-preview * {
 }
 
 @media (prefers-color-scheme: dark) {
-    #id_content {
-        background: black !important;
+
+    input#id_username,
+    input#id_password,
+    input#id_password1,
+    input#id_password2,
+    input#id_name,
+    input#id_email,
+    input#id_pic,
+    textarea#id_comment,
+    textarea#id_content,
+    textarea#id_description {
+        color: black;
+    }
+
+    .markdownx-preview a {
+        color: #bae6fd !important;
+        text-decoration: underline;
+    }
+
+    .markdownx-preview a:hover {
+        color: white !important;
+        text-decoration: underline;
     }
 }
 
@@ -46,6 +66,10 @@ textarea#id_comment {
     textarea#id_content {
         width: 100%;
     }
+}
+
+.markdownx-preview {
+    overflow: scroll
 }
 
 

@@ -40,7 +40,7 @@ class MPTTCommentForm(CommentForm):
     )
     comment = forms.CharField(
         label=_("Comment"),
-        widget=forms.Textarea(attrs={"placeholder": "Thougths?"}),
+        widget=forms.Textarea(attrs={"placeholder": "Thoughts?"}),
         max_length=COMMENT_MAX_LENGTH,
     )
 

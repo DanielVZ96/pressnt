@@ -2,15 +2,15 @@
 {% block content %}
     {% load comments %}
     {% load bleach_tags %}
-    <div class="2xl:flex justify-center">
-        <div class="ml-auto bg-white dark:bg-inherit min-w-[50%] max-w-4xl px-10 py-5 border-black border-2 md:m-5 z-10">
+    <div class="2xl:flex max-md:max-w-sm justify-center">
+        <div class="ml-auto bg-white dark:bg-slate-600 min-w-[50%] max-w-4xl px-10 py-5 border-black dark:border-sky-100 border-2 md:m-5 z-10">
             <div class="text-lg pt-5">
                 <a href="{% url 'profile-detail' pk=object.user.profile.id %}"
                    class="underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">
                     <img height="50px"
                          width="50px"
                          alt="pofile pic"
-                         class="border-black border dark:bg-sky-100 rounded-full aspect-1 apect object-cover"
+                         class="border-black dark:border-sky-100 border dark:bg-sky-100 rounded-full aspect-1 apect object-cover"
                          src="{{ object.user.profile.pic.url }}"/>
                 By {{ object.user.profile }}</a>
                 {% if object.user.id == user.id %}
@@ -20,7 +20,7 @@
             </div>
             <div class="flex align-center pt-2 -mb-5">
                 <div>
-                    <form method="post" id="like" novaldiate>
+                    <form method="post" id="like">
                         {% csrf_token %}
                         {{ like_form.as_p }}
                         <input type="submit"
@@ -31,7 +31,7 @@
                     </form>
                 </div>
                 <div class="flex ">
-                    <form method="post" id="follow" novaldiate>
+                    <form method="post" id="follow">
                         {% csrf_token %}
                         {{ follow_form.as_p }}
                         <input type="submit"
@@ -44,9 +44,11 @@
             </div>
             <div class="markdownx-preview ">{{ markdown | safe }}</div>
         </div>
-        <div class="2xl:fixed mt-2 w-full h-4/5 overflow-y-scroll scroll-smooth  2xl:p-5 p-3 border-b-2 border-black">
-            <div class="2xl:w-[30em] max-w-4xl m-2 border-2 border-black bg-white dark:bg-slate-700">
-                <h2 class="text-center bg-sky-50 border-b-2 border-b-black dark:bg-sky-500 ">Comments {{ object.comment_count }}</h2>
+        <div class="2xl:fixed mt-2 w-full h-4/5 overflow-y-scroll scroll-smooth  2xl:p-5 p-3 border-b-2 border-black dark:border-sky-100">
+            <div class="2xl:w-[25em] max-w-4xl m-2 border-2 border-black dark:border-sky-100 bg-white dark:bg-slate-600">
+                <h2 class="text-center bg-sky-50 border-b-2 border-b-black dark:border-b-sky-100 dark:bg-slate-700 ">
+                    Comments {{ object.comment_count }}
+                </h2>
                 <div class="p-2">
                     {% with object as object %}
                         {% with object_detail_view="post-detail" %}

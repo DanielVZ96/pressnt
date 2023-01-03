@@ -16,7 +16,7 @@
     <body class="dark:bg-slate-700 dark:text-sky-50 bg-sky-50 flex justify-center">
         <div class="max-w-5xl flex-1">
             <a href="{% url 'home' %}">
-                <div class="sm:visible invisible">
+                <div class="sm:visible max-sm:hidden">
                     <img width="150px"
                          height="75px"
                          alt="logo"
@@ -28,13 +28,13 @@
                          class="mt-5 ml-5 absolute invisible dark:visible"
                          src="{% static 'images/pt-logo-full-whitetxt.png' %}"/>
                 </div>
-                <div class="max-sm:visible invisible">
+                <div class="max-sm:visible sm:hidden">
                     <img width="75px"
                          height="75px"
                          alt="logo"
                          class="mt-3 ml-5 absolute dark:invisible"
                          src="{% static 'images/pt-logo-360px.png' %}"/>
-                    <img width="150px"
+                    <img width="75px"
                          height="75px"
                          alt="logo"
                          class="mt-5 ml-5 absolute invisible dark:visible"
@@ -68,7 +68,7 @@
                     {% endif %}
                 </ul>
             </nav>
-            <main class="flex justify-center">
+            <main class="flex  max-x-[99vw] justify-center">
                 {% block content %}
                 {% endblock content %}
             </main>

@@ -9,7 +9,9 @@
                     <div class="p-2 grid place-content-center">
                         <table class="w-96">
                             <tr class="p-2 flex">
-                                <td class="text-xs absolute ml-10 -mt-1 bg-sky-50 border-black border px-1">{{ field.label }}</td>
+                                <td class="text-xs absolute ml-10 -mt-1 bg-sky-50 border-black border px-1 dark:bg-slate-600 dark:border-sky-50">
+                                    {{ field.label }}
+                                </td>
                             </tr>
                             <tr>
                                 <td class="flex justify-center">
@@ -42,7 +44,7 @@
                            class="cursor-pointer align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400 w-4/5"/>
                 </div>
                 <div class="px-5 flex place-content-center">
-                    <a class="cursor-pointer align-middle border border-black bg-sky-50 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-black font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-slate-900 dark:highlight-white/20 dark:hover:bg-slate-400 w-4/5"
+                    <a class="dark:text-white align-middle border border-black dark:border-sky-100 bg-sky-50 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-black font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:hover:bg-slate-600 dark:highlight-white/20 dark:bg-slate-700 w-4/5"
                        href="{% url 'register' %}">Register</a>
                 </div>
                 <div class="p-5 flex-1 place-content-center">

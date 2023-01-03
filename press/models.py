@@ -26,7 +26,7 @@ class Profile(models.Model):
     updated_at = models.DateField(auto_now=True)
 
     def __str__(self) -> str:
-        return f"{self.name} (@{self.user.username})"
+        return f"{self.name[:32]} (@{self.user.username[:32]})"
 
     def get_absolute_url(self):
         return reverse("profile-detail", kwargs={"pk": self.pk})

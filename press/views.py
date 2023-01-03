@@ -282,6 +282,10 @@ class PostDetail(ProfileRequiredMixin, DetailView):
             return HttpResponseRedirect(self.get_object().get_absolute_url())
 
 
+class UserPostDetail(LoginRequiredMixin, PostDetail):
+    pass
+
+
 class PostUpdate(ProfileRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Post
     fields = ["content"]
