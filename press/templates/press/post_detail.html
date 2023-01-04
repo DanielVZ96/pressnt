@@ -2,6 +2,7 @@
 {% block content %}
     {% load comments %}
     {% load bleach_tags %}
+    {% load press_tags %}
     <div class="2xl:flex max-md:max-w-sm justify-center">
         <div class="ml-auto bg-white dark:bg-slate-600 min-w-[50%] max-w-4xl px-10 py-5 border-black dark:border-sky-100 border-2 md:m-5 z-10">
             <div class="text-lg pt-5">
@@ -42,7 +43,7 @@
                     </form>
                 </div>
             </div>
-            <div class="markdownx-preview ">{{ markdown | safe }}</div>
+            <div class="markdownx-preview ">{{ markdown | mentionify | safe }}</div>
         </div>
         <div class="2xl:fixed mt-2 w-full h-4/5 overflow-y-scroll scroll-smooth  2xl:p-5 p-3 border-b-2 border-black dark:border-sky-100">
             <div class="2xl:w-[25em] max-w-4xl m-2 border-2 border-black dark:border-sky-100 bg-white dark:bg-slate-600">

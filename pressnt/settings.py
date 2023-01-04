@@ -149,7 +149,7 @@ class DEV(Configuration):
     MEDIA_ROOT = BASE_DIR / "media"
     MEDIA_URL = "/media/"
 
-    LOGIN_REDIRECT_URL = "/profile/"
+    LOGIN_REDIRECT_URL = "/"
 
     MARKDOWNX_MARKDOWN_EXTENSIONS = ["extra", "toc", "fenced_code"]
     EMAIL_VERIFIED_CALLBACK = verified_callback
