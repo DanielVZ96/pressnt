@@ -63,6 +63,10 @@
                                class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400">Your Post</a>
                         </li>
                         <li>
+                            <a href="{% url 'profile-detail' pk=object.user.profile.id %}"
+                               class="px-5 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Profile</a>
+                        </li>
+                        <li>
                             <a href="{% url 'logout' %}"
                                class="px-5 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Logout</a>
                         </li>
