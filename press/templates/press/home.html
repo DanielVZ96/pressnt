@@ -11,9 +11,9 @@
                     <img height="50px"
                          width="50px"
                          alt="pofile pic"
-                         class="border-black w-[50px] h-[50px] dark:border-sky-100 border dark:bg-sky-100 rounded-full aspect-1 object-cover"
+                         class="my-auto border-black w-[50px] h-[50px] dark:border-sky-100 border dark:bg-sky-100 rounded-full aspect-1 object-cover"
                          src="{{ post.user.profile.pic.url }}"/>
-                    <div class="p-2">
+                    <div class="px-2">
                         <table >
                             <tr>
                                 <td class="text-xl font-bold underline hover:text-sky-500">
@@ -57,13 +57,13 @@
             </h1>
             {% for follow in follow_page_obj %}
                 <div onclick="location.href=`{% url 'post-detail' pk=follow.post.id %}`"
-                     class="overflow-ellipsis cursor-pointer flex flex-row md:p-5  m-2 w-auto hover:bg-sky-50  dark:hover:bg-slate-500">
-                    <img height="50px"
+                     class="overflow-ellipsis cursor-pointer flex flex-row md:p-5  m-2 w-auto hover:bg-sky-50  dark:hover:bg-slate-500 place-content-center">
+                    <img alt="pofile pic"
                          width="50px"
-                         alt="pofile pic"
-                         class="border-black w-[50px] h-[50px] dark:border-sky-100 border dark:bg-sky-100 rounded-full aspect-1 object-cover"
+                         height="50px"
+                         class="my-auto border-black w-[50px] h-[50px] dark:border-sky-100 border dark:bg-sky-100 rounded-full aspect-1 object-cover"
                          src="{{ follow.post.user.profile.pic.url }}"/>
-                    <div class="p-2">
+                    <div class="px-2">
                         <table >
                             <tr>
                                 <td class="text-xl font-bold underline hover:text-sky-500 ">
