@@ -300,6 +300,12 @@ class PostUpdate(ProfileRequiredMixin, LoginRequiredMixin, UpdateView):
     def get_object(self):
         return Post.objects.get(user=self.request.user)
 
+    def post(self, *args, **kwargs):
+        response = super().post(*args, **kwargs)
+        self.get_object().notify_mentions()
+        self.get_object().make_comments_old()
+        return response
+
 
 class Home(ProfileRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
@@ -325,3 +331,16 @@ class Home(ProfileRequiredMixin, views.View):
                 "has_follows": follow.exists(),
             },
         )
+
+
+class News(ProfileRequiredMixin, LoginRequiredMixin, views.View):
+    def get(self, request, *args, **kwargs):
+        notifications = request.user.notifications.all()
+        pages = Paginator(notifications, PAGING)
+        page = request.GET.get("page")
+        notifications_page = pages.get_page(page)
+        response = render(
+            request, "press/news.html", {"notifications_page": notifications_page},
+        )
+        notifications.mark_all_as_read()
+        return response

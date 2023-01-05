@@ -1,17 +1,10 @@
-import re
 from django import template
 from django.contrib.auth.models import User
 from django.utils.html import format_html
-from functools import lru_cache
+
+from press.utils import user_regex
 
 register = template.Library()
-
-MENTION_REGEX = r"@([\w\-\+\_\.\@]+)"
-
-
-@lru_cache(maxsize=1)
-def user_regex():
-    return re.compile(MENTION_REGEX)
 
 
 def replace_user_with_anchor(user_matchobj):
@@ -21,7 +14,7 @@ def replace_user_with_anchor(user_matchobj):
         return "@" + username
     else:
         link = user.profile.get_absolute_url()
-        return format_html("<a href='{}'>@{}</a>", link, username)
+        return format_html("<a class='mention bold' href='{}'>@{}</a>", link, username)
 
 
 @register.filter(is_safe=True)

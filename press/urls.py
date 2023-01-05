@@ -11,6 +11,7 @@ from press.views import (
     ProfileDetailView,
     EmailSentView,
     VerifyView,
+    News,
 )
 
 urlpatterns = [
@@ -24,5 +25,6 @@ urlpatterns = [
     path("post/", PostUpdate.as_view(), name="post-update"),
     path("sent/", EmailSentView.as_view(), name="email-sent"),
     path("verify/<str:token>/", VerifyView.as_view(), name="verify-email"),
+    path("news/", News.as_view(), name="news"),
     path("", Home.as_view(), name="home"),
 ]

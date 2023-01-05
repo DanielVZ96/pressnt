@@ -3,7 +3,11 @@
 {% block extrahead %}
     <link rel="shortcut icon"
           href="{% static 'images/pt-logo-360px-blackbg.png' %}"/>
-{% endblock %}
+{% endblock extrahead %}
+{% load notifications_tags %}
+{% if request.user.is_authenticated %}
+    {% notifications_unread as unread_count %}
+{% endif %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -12,6 +16,10 @@
         {% tailwind_css %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
         <script defer data-domain="app.pressnt.net" src="https://plausible.io/js/script.js"></script>
+        {% if request.user.is_authenticated %}
+            <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
+            {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+        {% endif %}
         <title>Pressn't</title>
     </head>
     <body class="dark:bg-slate-700 dark:text-sky-50 bg-sky-50 flex justify-center">
@@ -42,33 +50,39 @@
                          src="{% static 'images/pt-logo-360px-whitetxt.png' %}"/>
                 </div>
             </a>
-            <nav class="flex justify-center p-10">
+            <nav class="flex justify-center p-10 z-20">
                 <ul class="flex space-x-2 align-middle">
                     <li class="md:visible invisible">
                         <a href="{% url 'home' %}"
-                           class="px-5 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Home</a>
+                           class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Home</a>
                     </li>
                     {% if not request.user.is_authenticated %}
                         <li>
                             <a href="{% url 'register' %}"
-                               class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400 max-sm:px-2">Join Now</a>
+                               class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400 max-sm:px-2"><span class="min-[250px]:hidden">Join</span> <span class="max-[250px]:hidden">Join Now</span></a>
                         </li>
                         <li>
                             <a href="{% url 'login' %}"
-                               class="px-5 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Login</a>
+                               class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Login</a>
                         </li>
                     {% else %}
                         <li>
                             <a href="{% url 'user-post-detail' %}"
-                               class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400">Your Post</a>
+                               class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-3 rounded-lg w-full flex items-center justify-center dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400"><span class="min-[450px]:hidden">Post</span> <span class="max-[450px]:hidden">Your Post</span></a>
                         </li>
                         <li>
-                            <a href="{% url 'profile-detail' pk=object.user.profile.id %}"
-                               class="px-5 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Profile</a>
+                            <a href="{% url 'profile-detail' pk=request.user.profile.id %}"
+                               class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Profile</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'news' %}"
+                               class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">
+                                {% live_notify_badge %} News
+                            </a>
                         </li>
                         <li>
                             <a href="{% url 'logout' %}"
-                               class="px-5 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Logout</a>
+                               class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Logout</a>
                         </li>
                     {% endif %}
                 </ul>

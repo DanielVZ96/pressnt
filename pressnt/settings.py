@@ -36,6 +36,7 @@ apps_to_install = [
     "press",
     "comments",
     "django_bleach",
+    "notifications",
 ]
 
 

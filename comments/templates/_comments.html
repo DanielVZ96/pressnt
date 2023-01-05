@@ -1,18 +1,22 @@
 {% load comments %}
 {% load mptt_tags %}
 {% load bleach_tags %}
+{% load press_tags %}
 {% render_comment_form for object %}
 {% get_comment_list for object as comments %}
 {% if comments %}
     {% recursetree comments %}
-    <div class="mx-2 px-2 border-l-4 w-full">
+    <div id="c{{ node.id }}" class="mx-2 px-2 border-l-4 w-full">
         <div>
             <a name="{{ node.id }}"></a>
-            <p class="overflow-scroll">{{ node.comment | bleach }}</p>
+            <p class="overflow-scroll {% if node.old %} opacity-50 dark:opacity-75{% endif %}">
+                {{ node.comment | bleach | mentionify }}
+            </p>
             <div class="font-extralight group">
                 By <a class="cursor-pointer hover:underline overflow-ellipsis"
     href="{{ node.user.profile.get_absolute_url | bleach_linkify }}">{{ node.user }}</a>
                 {{ node.submit_date|timesince }} ago
+                {% if node.old %}(old){% endif %}
                 <a class="invisible group-hover:visible"
                    href="{{ object.get_absolute_url | bleach_linkify }}#c{{ node.id }}">#link</a>
             </div>

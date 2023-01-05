@@ -10,6 +10,8 @@ from markdownx.models import MarkdownxField
 from markdownx.utils import markdownify
 
 from comments.models import MPTTComment
+from press.utils import user_regex
+from notifications.signals import notify
 
 
 User._meta.get_field("email")._unique = True
@@ -69,12 +71,30 @@ class Post(models.Model):
         ).count()
         self.save()
 
+    def make_comments_old(self):
+        MPTTComment.objects.filter(
+            content_type=ContentType.objects.get_for_model(self), object_pk=self.id,
+        ).update(old=True)
+
     def save(self, *args, **kwargs):
         self.content = bleach.clean(self.content)
         lines = self.content.strip().splitlines()
         if lines:
             self.title = lines[0]
         return super().save(*args, **kwargs)
+
+    def get_mentions(self):
+        usernames = [username for username in user_regex().findall(self.content)]
+        return User.objects.filter(username__in=usernames)
+
+    def notify_mentions(self):
+        for user in self.get_mentions():
+            notify.send(
+                self.user,
+                recipient=user,
+                verb="mentioned you in his post",
+                action_object=user.post,
+            )
 
 
 class PostLike(models.Model):

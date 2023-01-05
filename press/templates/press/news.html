@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+    {% load bleach_tags %}
+    <div class="max-w-sm">
+        <div class="md:mx-5 my-5 border-2 bg-white dark:bg-slate-600 border-black dark:border-sky-100">
+            <h1 class="text-center bg-sky-50 border-b-2 border-b-black dark:border-b-sky-100 dark:bg-slate-700 ">Notifications</h1>
+            {% for notification in notifications_page %}
+                <div class="max-w-xs border-b-2 overflow-hidden flex flex-row p-5  m-2 md:w-[450px] hover:bg-sky-50 dark:hover:bg-slate-500">
+                    <img height="50px"
+                         width="50px"
+                         alt="pofile pic"
+                         class="my-auto border-black w-[50px] h-[50px] dark:border-sky-100 border dark:bg-sky-100 rounded-full aspect-1 object-cover"
+                         src="{{ notification.actor.profile.pic.url }}"/>
+                    <div class="px-2">
+                        <table >
+                            <tr>
+                                <td class="text-xl font-bold underline hover:text-sky-500">
+                                    <a href="{% url 'profile-detail' pk=notification.actor.profile.id %}"
+                                       class="py-5 hover:underline hover:text-sky-500">
+                                        {{ notification.actor.profile }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0">
+                                    <a class="py-5 hover:underline hover:text-sky-500"
+                                       href="{{ notification.action_object.get_absolute_url | bleach_linkify }}">{{ notification.verb }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0">{{ notification.timestamp }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% if notification.unread %}<span class="absolute -mt-5 text-sm">New</span>{% endif %}
+                </div>
+            {% endfor %}
+            <div class="pt-5 pl-5">
+                <span class="step-links">
+                    {% if notifications_page.has_previous %}
+                        <a href="?page=1"><< first</a>
+                        <a href="?page={{ notifications_page.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="current">Page {{ notifications_page.number }} of {{ notifications_page.paginator.num_pages }}.</span>
+                    {% if notifications_page.has_next %}
+                        <a href="?page={{ notifications_page.next_page_number }}">next</a>
+                        <a href="?page={{ notifications_page.paginator.num_pages }}">last »;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
