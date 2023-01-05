@@ -46,6 +46,7 @@ class Post(models.Model):
     )
     created_at = models.DateField(auto_now_add=True, null=True)
     updated_at = models.DateField(auto_now=True, null=True)
+    modified_at = models.DateField(null=True)
     like_count = models.PositiveIntegerField(default=0)
     follow_count = models.PositiveIntegerField(default=0)
     comment_count = models.PositiveIntegerField(default=0)

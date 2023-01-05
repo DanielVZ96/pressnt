@@ -32,7 +32,7 @@ def get_trending_posts_queryset():
         return (
             Post.objects.annotate(
                 duration=ExpressionWrapper(
-                    Cast(now, DateTimeField()) - F("updated_at"),
+                    Cast(now, DateTimeField()) - F("modified_at"),
                     output_field=FloatField(),
                 )
             )
@@ -44,7 +44,7 @@ def get_trending_posts_queryset():
             Post.objects.annotate(
                 duration=ExpressionWrapper(
                     Cast(
-                        Epoch(Cast(now, DateTimeField()) - F("updated_at")),
+                        Epoch(Cast(now, DateTimeField()) - F("modified_at")),
                         FloatField(),
                     ),
                     output_field=FloatField(),

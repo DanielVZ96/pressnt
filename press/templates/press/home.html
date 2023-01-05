@@ -29,7 +29,7 @@
     class="sm:py-5 hover:underline hover:text-sky-500">
                                     {{ post.user.profile }}
                                 </a>
-                                <div class="text-sm p-0 absolute">Last Update: {{ post.updated_at | date:"SHORT_DATE_FORMAT" }}</div>
+                                <div class="text-sm p-0 absolute">Last Update: {{ post.modified_at | date:"SHORT_DATE_FORMAT" }}</div>
                             </td>
                         </tr>
                     </table>
@@ -75,7 +75,7 @@
                                 <td class="text-sm p-0">
                                     {{ follow.post.comment_count }} comments {{ follow.post.like_count }} likes by <a href="{% url 'profile-detail' pk=follow.post.user.profile.id %}"
     class="hover:underline hover:text-sky-500">{{ follow.post.user.profile }}</a>
-                                    <div class="text-sm p-0 absolute">Last Update: {{ follow.post.updated_at | date:"SHORT_DATE_FORMAT" }}</div>
+                                    <div class="text-sm p-0 absolute">Last Update: {{ follow.post.modifed_at | date:"SHORT_DATE_FORMAT" }}</div>
                                 </td>
                             </tr>
                         </table>

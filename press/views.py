@@ -7,6 +7,7 @@ from django.views.generic.edit import FormView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
+from django.utils import timezone
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
@@ -302,8 +303,11 @@ class PostUpdate(ProfileRequiredMixin, LoginRequiredMixin, UpdateView):
 
     def post(self, *args, **kwargs):
         response = super().post(*args, **kwargs)
-        self.get_object().notify_mentions()
-        self.get_object().make_comments_old()
+        post = self.get_object()
+        post.notify_mentions()
+        post.make_comments_old()
+        post.modified_at = timezone.now()
+        post.save()
         return response
 
 
