@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="m-5 border-2 border-black dark:border-sky-50 w-full max-w-md">
+        <form method="post" class="flex-1 items-center">
+            {% csrf_token %}
+            <h2 class="text-center border-b-2 border-b-black dark:border-sky-50">
+                Do you really want to delete your account? This action is irreversible
+            </h2>
+            <div class="p-2 pb-0">
+                {% for field in form %}
+                    <div class="p-1 grid place-content-center">
+                        <table class="w-96">
+                            <tr class="p-2 flex">
+                                <td class="text-xs absolute ml-10 -mt-1 bg-sky-50 border-black border px-1 dark:bg-slate-600 dark:border-sky-50">
+                                    {{ field.label }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="flex justify-center">{{ field }}</td>
+                            </tr>
+                            <tr>
+                                <td class="flex justify-center">
+                                    {% if field.errors %}<small class="text-center">{{ field.errors|striptags }}</small>{% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="p-2 flex-1 place-content-center">
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="text-center text-red-400 text-sm">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="text-red-400 text-sm">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="px-5 py-2 flex place-content-center">
+                    <input type="submit"
+                           value="Delete"
+                           class="cursor-pointer align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg flex items-center justify-center dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400 w-4/5"/>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

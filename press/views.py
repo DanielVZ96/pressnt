@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.core.paginator import Paginator
@@ -362,3 +363,18 @@ class ContactFormView(FormView):
 
 class ContactSucessView(TemplateView):
     template_name = "press/contact_success.html"
+
+
+class DeleteUserView(DeleteView):
+    template_name = "press/confirm_user_delete.html"
+    model = User
+    success_url = "/"
+
+    def get(self, request, *args, **kwargs):
+        request.session["deleting"] = "YES"
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if request.session.pop("deleting") != "YES":
+            return redirect("home")
+        return super().post(request, *args, **kwargs)

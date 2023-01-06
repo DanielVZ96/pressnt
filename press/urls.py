@@ -14,6 +14,7 @@ from press.views import (
     News,
     ContactFormView,
     ContactSucessView,
+    DeleteUserView,
 )
 
 urlpatterns = [
@@ -30,5 +31,6 @@ urlpatterns = [
     path("news/", News.as_view(), name="news"),
     path("contact/", ContactFormView.as_view(), name="contact"),
     path("contact/success/", ContactSucessView.as_view(), name="contact-success"),
+    path("profile/<int:pk>/delete/", DeleteUserView.as_view(), name="delete-user"),
     path("", Home.as_view(), name="home"),
 ]
