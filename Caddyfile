@@ -5,3 +5,7 @@ app.pressnt.net {
         reverse_proxy django:8000
     }
 }
+
+www.pressnt.net {
+      redir https://app.pressnt.net{uri} permanent
+}
