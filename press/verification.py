@@ -7,7 +7,6 @@ from django.template.loader import get_template
 from django.template import Context
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
 from django.core.exceptions import BadRequest

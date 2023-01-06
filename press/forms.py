@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.html import format_html
+from django.core.mail import send_mail
 
 from press.models import Follow, PostLike, Profile
 
@@ -61,3 +62,18 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             "pic": PictureWidget(),
         }
+
+
+class ContactForm(forms.Form):
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+    email_address = forms.EmailField(max_length=150)
+    message = forms.CharField(widget=forms.Textarea, max_length=2000)
+
+    def send_email(self):
+        message = "\n".join(
+            [f"{k.replace('_', ' ')}: {v}" for k, v in self.cleaned_data.items()]
+        )
+        send_mail(
+            "Pressn't Contact", message, "noreply@pressnt.net", ["dsvalenzuela@uc.cl"]
+        )

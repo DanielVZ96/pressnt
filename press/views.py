@@ -14,7 +14,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.http import HttpResponseRedirect
-from press.forms import FollowForm, PostLikeform, ProfileForm, RegisterForm
+from press.forms import ContactForm, FollowForm, PostLikeform, ProfileForm, RegisterForm
 from press.models import Follow, PostLike, Profile, Post
 from press.services.rank import get_followed_posts_queryset, get_trending_posts_queryset
 from press.verification import send_verification, verify_user_token
@@ -348,3 +348,17 @@ class News(ProfileRequiredMixin, LoginRequiredMixin, views.View):
         )
         notifications.mark_all_as_read()
         return response
+
+
+class ContactFormView(FormView):
+    template_name = "press/contact.html"
+    form_class = ContactForm
+    success_url = "contact-success/"
+
+    def form_valid(self, form):
+        form.send_email()
+        return super().form_valid(form)
+
+
+class ContactSucessView(TemplateView):
+    template_name = "press/contact_success.html"

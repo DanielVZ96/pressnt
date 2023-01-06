@@ -154,6 +154,7 @@ class DEV(Configuration):
 
     MARKDOWNX_MARKDOWN_EXTENSIONS = ["extra", "toc", "fenced_code"]
     EMAIL_VERIFIED_CALLBACK = verified_callback
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 class PROD(DEV):
