@@ -354,7 +354,7 @@ class News(ProfileRequiredMixin, LoginRequiredMixin, views.View):
 class ContactFormView(FormView):
     template_name = "press/contact.html"
     form_class = ContactForm
-    success_url = "contact-success/"
+    success_url = "contact/success/"
 
     def form_valid(self, form):
         form.send_email()
