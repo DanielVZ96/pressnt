@@ -93,7 +93,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         resp = super().post(*args, **kwargs)
 
         form = self.get_form()
-        if self.request.session.get("onboarding") == "profile":
+        if self.request.session.get("onboarding"):
             self.request.session.pop("onboarding")
             if (
                 form.is_valid()
