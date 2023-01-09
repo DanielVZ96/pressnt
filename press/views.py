@@ -26,15 +26,21 @@ PAGING = 15
 class EmailSentView(TemplateView):
     template_name = "press/email_sent.html"
 
+    def get(self, *args, **kwargs):
+        self.request.session["onboarding"] = "email_sent"
+        return super().get(*args, **kwargs)
+
 
 class ProfileRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.profile.is_valid:
+            request.session["onboarding"] = "profile"
             return redirect("profile-update")
         if (
             request.user.is_authenticated
             and not Post.objects.filter(user=request.user).exists()
         ):
+            request.session["onboarding"] = "post"
             return redirect("post-create")
         return super().dispatch(request, *args, **kwargs)
 
@@ -85,8 +91,16 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     def post(self, *args, **kwargs):
         resp = super().post(*args, **kwargs)
-        if not Post.objects.filter(user=self.request.user).exists():
-            return redirect("post-create")
+
+        form = self.get_form()
+        if self.request.session.get("onboarding") == "profile":
+            self.request.session.pop("onboarding")
+            if (
+                form.is_valid()
+                and not Post.objects.filter(user=self.request.user).exists()
+            ):
+                self.request.session["onboarding"] = "post"
+                return redirect("post-create")
         return resp
 
 
@@ -158,6 +172,8 @@ class PostCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         self.object = form.save()
+        if self.request.session.get("onboarding") == "post":
+            self.request.session.pop("onboarding")
         return HttpResponseRedirect(self.get_success_url())
 
 

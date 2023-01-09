@@ -24,69 +24,88 @@
     </head>
     <body class="dark:bg-slate-700 dark:text-sky-50 bg-sky-50 flex justify-center">
         <div class="max-w-5xl flex-1">
-            <a href="{% url 'home' %}">
-                <div class="sm:visible max-sm:hidden">
-                    <img width="150px"
-                         height="75px"
-                         alt="logo"
-                         class="mt-3 ml-5 absolute dark:invisible"
-                         src="{% static 'images/pt-logo-full.png' %}"/>
-                    <img width="150px"
-                         height="75px"
-                         alt="logo"
-                         class="mt-5 ml-5 absolute invisible dark:visible"
-                         src="{% static 'images/pt-logo-full-whitetxt.png' %}"/>
-                </div>
-                <div class="max-sm:visible sm:hidden">
-                    <img width="75px"
-                         height="75px"
-                         alt="logo"
-                         class="mt-3 ml-5 absolute dark:invisible"
-                         src="{% static 'images/pt-logo-360px.png' %}"/>
-                    <img width="75px"
-                         height="75px"
-                         alt="logo"
-                         class="mt-5 ml-5 absolute invisible dark:visible"
-                         src="{% static 'images/pt-logo-360px-whitetxt.png' %}"/>
-                </div>
-            </a>
-            <nav class="flex justify-center p-10 z-20">
-                <ul class="flex space-x-2 align-middle">
-                    <li class="md:visible invisible">
-                        <a href="{% url 'home' %}"
-                           class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Home</a>
-                    </li>
-                    {% if not request.user.is_authenticated %}
-                        <li>
-                            <a href="{% url 'register' %}"
-                               class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400 max-sm:px-2"><span class="min-[250px]:hidden">Join</span> <span class="max-[250px]:hidden">Join Now</span></a>
-                        </li>
-                        <li>
-                            <a href="{% url 'login' %}"
-                               class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Login</a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="{% url 'user-post-detail' %}"
-                               class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-3 rounded-lg w-full flex items-center justify-center dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400"><span class="min-[450px]:hidden">Post</span> <span class="max-[450px]:hidden">Your Post</span></a>
-                        </li>
-                        <li>
-                            <a href="{% url 'profile-detail' pk=request.user.profile.id %}"
-                               class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Profile</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'news' %}"
-                               class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">
-                                {% live_notify_badge %} News
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'logout' %}"
-                               class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Logout</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
+            {% if request.session.onboarding == "profile" %}
+                <h1 class="font-bold text-center p-5 text-xl">Please fill in your Profile</h1>
+            {% elif request.session.onboarding == "post" %}
+                <h1 class="font-bold text-center p-5 text-xl">Please fill in your first post</h1>
+            {% else %}
+                <a href="{% url 'home' %}">
+                    <div class="sm:visible max-sm:hidden">
+                        <img width="150px"
+                             height="75px"
+                             alt="logo"
+                             class="mt-3 ml-5 absolute dark:invisible"
+                             src="{% static 'images/pt-logo-full.png' %}"/>
+                        <img width="150px"
+                             height="75px"
+                             alt="logo"
+                             class="mt-5 ml-5 absolute invisible dark:visible"
+                             src="{% static 'images/pt-logo-full-whitetxt.png' %}"/>
+                    </div>
+                    <div class="max-sm:visible sm:hidden">
+                        <img width="75px"
+                             height="75px"
+                             alt="logo"
+                             class="mt-3 ml-5 absolute dark:invisible"
+                             src="{% static 'images/pt-logo-360px.png' %}"/>
+                        <img width="75px"
+                             height="75px"
+                             alt="logo"
+                             class="mt-5 ml-5 absolute invisible dark:visible"
+                             src="{% static 'images/pt-logo-360px-whitetxt.png' %}"/>
+                    </div>
+                </a>
+                {% if request.session.onboarding == "email_sent" %}
+                    <nav class="flex justify-center p-10 z-20">
+                        <ul class="flex space-x-2 align-middle">
+                            <li>
+                                <a href="{% url 'profile-update' %}"
+                                   class="font-bold text-xl px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">
+                                    You may proceed to fill in your profile and post.
+                                </li>
+                            </ul>
+                        </nav>
+                    </a>
+                {% else %}
+                    <nav class="flex justify-center p-10 z-20">
+                        <ul class="flex space-x-2 align-middle">
+                            <li class="md:visible invisible">
+                                <a href="{% url 'home' %}"
+                                   class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Home</a>
+                            </li>
+                            {% if not request.user.is_authenticated %}
+                                <li>
+                                    <a href="{% url 'register' %}"
+                                       class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400 max-sm:px-2"><span class="min-[250px]:hidden">Join</span> <span class="max-[250px]:hidden">Join Now</span></a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'login' %}"
+                                       class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Login</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="{% url 'user-post-detail' %}"
+                                       class="align-middle bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-7 px-3 rounded-lg w-full flex items-center justify-center dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400"><span class="min-[450px]:hidden">Post</span> <span class="max-[450px]:hidden">Your Post</span></a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'profile-detail' pk=request.user.profile.id %}"
+                                       class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'news' %}"
+                                       class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">
+                                        {% live_notify_badge %} News
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}"
+                                       class="px-2 py-5 underline underline-offset-1 align-middle hover:text-sky-500 dark:hover:text-sky-400">Logout</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% endif %}
             <main class="flex  max-x-[99vw] justify-center">
                 {% block content %}
                 {% endblock content %}
