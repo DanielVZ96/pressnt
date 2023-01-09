@@ -172,6 +172,9 @@ class PostCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         self.object = form.save()
+        self.object.notify_mentions()
+        self.object.modified_at = timezone.now()
+        self.object.save()
         if self.request.session.get("onboarding") == "post":
             self.request.session.pop("onboarding")
         return HttpResponseRedirect(self.get_success_url())
