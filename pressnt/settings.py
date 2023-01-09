@@ -27,6 +27,7 @@ apps_to_install = [
     "django.contrib.staticfiles",
     "django.forms",
     "django.contrib.sites",
+    "django.contrib.sitemaps",
     "django_comments",
     "mptt",
     "markdownx",
@@ -37,6 +38,7 @@ apps_to_install = [
     "comments",
     "django_bleach",
     "notifications",
+    "robots",
 ]
 
 

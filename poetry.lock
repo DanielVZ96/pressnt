@@ -404,6 +404,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "django-robots"
+version = "5.0"
+description = "Robots exclusion application for Django, complementing Sitemaps."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "django-sendgrid-v5"
 version = "1.2.1"
 description = "An implementation of Django's EmailBackend compatible with sendgrid-python v5+"
@@ -1052,7 +1060,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "57602571809af8feba2ca23ab6e3bc994d5c93fe325dfcebadeebe70ae5f3852"
+content-hash = "a738a4004d2b07a3c1a8fc0ca807d490134541bbc8982c7c9b45520c74bbb920"
 
 [metadata.files]
 asgiref = [
@@ -1268,6 +1276,9 @@ django-notifications-hq = [
 django-resized = [
     {file = "django-resized-1.0.2.tar.gz", hash = "sha256:52d727860f64ef4fdadbe2e74b66231c71c59df4d95949e338fcd320450f77fa"},
     {file = "django_resized-1.0.2-py3-none-any.whl", hash = "sha256:d55a8d4125838486a1e76ffb689f8364f7d579bc7562b04400065602ec2ba7cc"},
+]
+django-robots = [
+    {file = "django-robots-5.0.tar.gz", hash = "sha256:f5817975a9e3b082440a81396111d8a6671b54f6aa11349847554bd1beebd959"},
 ]
 django-sendgrid-v5 = [
     {file = "django-sendgrid-v5-1.2.1.tar.gz", hash = "sha256:cdc96bcea51caa2956df273434356079758cf0ac8e4fd46184b6e5615f586c3a"},

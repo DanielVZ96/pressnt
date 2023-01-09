@@ -19,7 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-
+from django.contrib.sitemaps.views import sitemap
+from pressnt.sitemaps import sitemaps
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -31,6 +32,13 @@ urlpatterns = [
     path(
         "inbox/notifications/", include(notifications.urls, namespace="notifications")
     ),
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
+    path("robots.txt", include("robots.urls")),
 ]
 
 if settings.DEBUG:
